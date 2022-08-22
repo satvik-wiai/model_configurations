@@ -1,0 +1,27 @@
+#ExplainableBoostingClassifier
+model_type: "xboosting"
+model_version: "1v0"
+metric: "rak"
+cross_validation: False
+hyperparameters:
+  "max_bins": hp.choice('max_bins', [32, 64, 128, 256, 512, 1024])
+  "max_interaction_bins": hp.choice('max_interaction_bins', [32, 64, 128, 256,])
+  "binning": hp.choice('binning', ["quantile_humanized", "quantile", "uniform"])
+  "outer_bags": hp.choice('outer_bags', [1, 2, 4, 8, 16,])
+  "inner_bags": hp.choice('inner_bags', [1, 2, 4, 8, 16,])
+  "learning_rate": hp.loguniform('learning_rate', -5, 0)
+  "validation_size": hp.choice('validation_size', [0.1, 0.2, 0.3, 0.4])
+  "early_stopping_rounds": hp.choice('early_stopping_rounds', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  "early_stopping_tolerance": hp.choice('early_stopping_tolerance', [0.0001, 0.001])
+  "max_rounds": hp.choice('max_rounds', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])
+  "min_samples_leaf": hp.choice('min_samples_leaf', [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024])
+  "max_leaves": hp.choice('max_leaves', [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024])
+
+
+optimization:
+  total_configurations: 100
+  type: "hyperopt"
+  const_params:
+    "random_state": 42
+    "n_jobs": 80
+  log: True

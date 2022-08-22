@@ -1,0 +1,24 @@
+model_type: "logreg"
+model_version: "1v1"
+metric: "auc_ra1040"
+cross_validation: False
+n_jobs_hyperparam: 96
+hyperparameters:
+  'C': hp.loguniform('C', low=-4*np.log(10), high=4*np.log(10))
+  'tol': hp.loguniform('tol', low=-5*np.log(10), high=-2*np.log(10))
+  'class_weight': hp.choice('class_weight', [null, "balanced", "auto"])
+  'solver' : hp.choice('solver', ['saga']) # liblinear?
+  'penalty': hp.choice('penalty', ['l2'])
+  # 'l1_ratio': hp.uniform('l1_ratio', 0,1)
+  'warm_start' : hp.choice('warm_start', [True, False])
+  'fit_intercept' : hp.choice('fit_intercept', [True, False])
+
+optimization:
+  total_configurations: 100
+  type: "hyperopt"
+  const_params:
+    "max_iter": 25000
+    "n_jobs": 96
+    "random_state": 42
+  log: True
+

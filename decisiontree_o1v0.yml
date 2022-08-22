@@ -1,0 +1,20 @@
+model_type: "decisiontree"
+model_version: "1v0"
+metric: "auc_ra1040"
+cross_validation: False
+hyperparameters:
+  "criterion": hp.choice('criterion', ["gini", "entropy"])
+  "splitter": hp.choice('splitter', ["best", "random"])
+  "max_depth": hp.choice('max_depth',[4,5,6,7,8,9,10,15,None])
+  "min_samples_split": hp.choice('min_samples_split', [2,4,8])
+  "min_samples_leaf": hp.choice('min_samples_leaf', [1,2,3,4])
+  "class_weight": hp.choice('class_weight', [None, 'balanced',])
+  "max_features": hp.choice('max_features', [None, "auto", "sqrt", "log2"])
+  "ccp_alpha": hp.uniform('ccp_alpha', 0, 1)
+
+optimization:
+  total_configurations: 100
+  type: "hyperopt"
+  const_params:
+    "random_state": 42
+  log: True

@@ -1,0 +1,24 @@
+model_type: "cbclassifier"
+model_version: "3v7"
+metric: "auc_ra1040"
+cross_validation: False
+
+hyperparameters:
+        'learning_rate': hp.loguniform('learning_rate', -7, 0)
+        'one_hot_max_size': hp.choice('one_hot_max_size', [x for x in range(0, 250)])
+        'depth': hp.choice('depth', [x for x in range(1, 15)])
+        'iterations': hp.choice('iterations', [100, 250, 500, 750, 1000, 1500])
+        'l2_leaf_reg': hp.uniform('l2_leaf_reg', 1, 10)
+        'bagging_temperature': hp.uniform('bagging_temperature', 0.00001, 1)
+        'random_strength': hp.quniform('random_strength', 1, 20, 1)
+optimization:
+    total_configurations: 100
+    type: "hyperopt"    
+    const_params: 
+        'task_type': "GPU" 
+        'devices': '7'
+        'loss_function': "Logloss"
+        'eval_metric': "AUC"
+        'custom_metric': "AUC"
+        'random_seed': 42
+    log: True

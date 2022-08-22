@@ -1,0 +1,34 @@
+model_type: "lgbmclassifier"
+model_version: "4v0"
+metric: "auc_ra1040"
+cross_validation: False
+hyperparameters:
+  #this is just piling on most of the possible parameter values for LGBM
+  'class_weight': hp.choice('class_weight', [None, 'balanced'])
+  'boosting_type': hp.choice('boosting_type', ['gbdt', 'dart', 'goss'])
+  'subsample_for_bin': scope.int(hp.quniform('subsample_for_bin', 20000, 300000, 20000))
+  'min_child_weight': hp.loguniform('min_child_weight', -16, 5)
+  'learning_rate': hp.loguniform('learning_rate', -7, 0)
+  'num_leaves' : scope.int(hp.qloguniform('num_leaves', 1, 7, 1))
+  'feature_fraction': hp.uniform('feature_fraction', 0.5, 1)
+  'bagging_fraction': hp.uniform('bagging_fraction', 0.5, 1)
+  'min_data_in_leaf': scope.int(hp.qloguniform('min_data_in_leaf', 0, 6, 1))
+  'min_sum_hessian_in_leaf': hp.loguniform('  ', -16, 5)
+  'lambda_l1': hp.choice('lambda_l1', [0, hp.loguniform('lambda_l1_positive', -16, 2)])
+  'lambda_l2': hp.choice('lambda_l2', [0, hp.loguniform('lambda_l2_positive', -16, 2)])
+  #the LGBM parameters docs list various aliases, and the LGBM implementation seems to complain about
+  #the following not being used due to other params, so trying to silence the complaints by setting to None
+  'subsample': None #overridden by bagging_fraction
+  'reg_alpha': None #overridden by lambda_l1
+  'reg_lambda': None #overridden by lambda_l2
+  'min_sum_hessian_in_leaf': None #overrides min_child_weight
+  'min_child_samples': None #overridden by min_data_in_leaf
+  'colsample_bytree': None #overridden by feature_fraction
+
+optimization:
+  total_configurations: 100
+  type: "hyperopt"
+  const_params:
+    "n_jobs": 80
+    "random_state": 42
+  log: True

@@ -1,0 +1,10 @@
+model_type: "gaussiannb"
+model_version: "1v0"
+metric: "auc_ra1040"
+cross_validation: False
+hyperparameters:
+  "var_smoothing": hp.choice('var_smoothing', [1e-9, 1e-8])
+optimization:
+  total_configurations: 100
+  type: "hyperopt"
+  log: True
